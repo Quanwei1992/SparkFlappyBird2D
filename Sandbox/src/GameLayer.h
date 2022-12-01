@@ -18,7 +18,7 @@ public:
 	virtual void OnEvent(Spark::Event& e)override;
 private:
 	bool OnWindowResize(Spark::WindowResizeEvent& e);
-	bool OnMouseButtonPressed(Spark::MouseButtonPressedEvent& e);
+	bool OnKeyPressed(Spark::KeyPressedEvent& e);
 	void CreateCamera(uint32_t width, uint32_t height);
 private:
 	Spark::Scope<Spark::OrthographicCamera> m_Camera;

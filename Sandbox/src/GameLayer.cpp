@@ -84,7 +84,7 @@ void GameLayer::OnImGuiRender()
 		pos.x += width * 0.5f - 300.0f;
 		pos.y += 50.0f;
 		if (m_Blink)
-			ImGui::GetForegroundDrawList()->AddText(m_Font, 120.0f, pos, 0xffffffff, "Click to Play!");
+			ImGui::GetForegroundDrawList()->AddText(m_Font, 120.0f, pos, 0xffffffff, "Click space to Play!");
 		break;
 	}
 	case GameState::GameOver:
@@ -95,7 +95,7 @@ void GameLayer::OnImGuiRender()
 		pos.x += width * 0.5f - 300.0f;
 		pos.y += 50.0f;
 		if (m_Blink)
-			ImGui::GetForegroundDrawList()->AddText(m_Font, 120.0f, pos, 0xffffffff, "Click to Play!");
+			ImGui::GetForegroundDrawList()->AddText(m_Font, 120.0f, pos, 0xffffffff, "Click space to Play!");
 
 		pos.x += 200.0f;
 		pos.y += 150.0f;
@@ -112,7 +112,7 @@ void GameLayer::OnEvent(Spark::Event& e)
 {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowResizeEvent>(SK_BIND_EVENT_FN(GameLayer::OnWindowResize));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(SK_BIND_EVENT_FN(GameLayer::OnMouseButtonPressed));
+	dispatcher.Dispatch<KeyPressedEvent>(SK_BIND_EVENT_FN(GameLayer::OnKeyPressed));
 }
 
 bool GameLayer::OnWindowResize(Spark::WindowResizeEvent& e)
@@ -121,13 +121,21 @@ bool GameLayer::OnWindowResize(Spark::WindowResizeEvent& e)
 	return false;
 }
 
-bool GameLayer::OnMouseButtonPressed(Spark::MouseButtonPressedEvent& e)
+bool GameLayer::OnKeyPressed(Spark::KeyPressedEvent& e)
 {
-	if (m_State == GameState::GameOver)
+	if (e.GetKeyCode() == SK_KEY_SPACE)
 	{
-		m_Level.Reset();
+		if (m_State == GameState::GameOver)
+		{
+			m_Level.Reset();
+		}
+		if (m_State != GameState::Play)
+		{
+			m_State = GameState::Play;
+
+			return true;
+		}
 	}
-	m_State = GameState::Play;
 	return false;
 }
 
